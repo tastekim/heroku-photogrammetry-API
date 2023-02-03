@@ -1,4 +1,6 @@
 import Vapor
+import Alamofire
+
 
 func routes(_ app: Application) throws {
     app.on(.POST, "upload", body: .collect(maxSize: "2gb")) { req async throws -> String in
@@ -64,12 +66,47 @@ func routes(_ app: Application) throws {
         
         guard let fileUrl = progress.fileUrl else { throw Abort(.internalServerError) }
     
-        print(fileUrl.path)
+        print("파일위치 \(fileUrl.path)")
+        
+        let fileURL = URL(fileURLWithPath: fileUrl.path)
+        print("파일유알엘 \(fileURL)")
+        let usdzData = try! Data(contentsOf: fileURL)
+        print("유에스디지 \(usdzData)")
+  
+        
+        //AF 도오전
+        let parameters: [String: Any] = [
+            "name": "file.usdz",
+            "user_id": 123,
+        ]
+        AF.upload(multipartFormData: { (multipartFormData) in
+            multipartFormData.append(fileURL, withName: "file")
+            for (key, value) in parameters {
+                multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
+            }
+        }, to: "http://3.39.21.242:8080/usdz2glb")
+            .response { response in
+                if response.error == nil {
+                    // File uploaded successfully
+                    print("승긍")
+                } else {
+                    // Handle error
+                    print("슬프")
+                }
+            }
+
         return req.fileio.streamFile(at: fileUrl.path)
     }
-
+ 
+    
     app.get("health") { req -> String in
         return "Up!"
+    }
+    
+    
+    app.get("test") { req -> String in
+        
+        return "hi"
     }
 }
 

@@ -96,8 +96,10 @@ class PhotogrammetryManager {
         }
         
         
-        guard let session = try? PhotogrammetrySession(input: inputFolderUrl) else { return nil }
-        
+        var configure = PhotogrammetrySession.Configuration()
+        configure.sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.sequential
+        configure.featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
+        guard let session = try? PhotogrammetrySession(input: inputFolderUrl, configuration: configure) else { return nil }
         sessionProgressStructs[id] = PhotogrammetrySessionProgress(session: session)
         return id
     }
@@ -108,7 +110,8 @@ class PhotogrammetryManager {
     
     public func doPhotogrammetry(_ id: UUID) async -> PhotogrammetrySession.Result? {
         let url = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("\(id.uuidString).usdz")
-        let request = PhotogrammetrySession.Request.modelFile(url: url, detail: .full)
+//        let request = PhotogrammetrySession.Request.modelFile(url: url, detail: .reduced)
+        let request = PhotogrammetrySession.Request.modelFile(url: url, detail: .raw)
         sessionProgressStructs[id]!.fileUrl = url
         let session = sessionProgressStructs[id]!.session
         
