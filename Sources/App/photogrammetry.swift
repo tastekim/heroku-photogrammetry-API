@@ -97,7 +97,7 @@ class PhotogrammetryManager {
         
         
         var configure = PhotogrammetrySession.Configuration()
-        configure.sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.sequential
+        configure.sampleOrdering = PhotogrammetrySession.Configuration.SampleOrdering.unordered
         configure.featureSensitivity = PhotogrammetrySession.Configuration.FeatureSensitivity.normal
         guard let session = try? PhotogrammetrySession(input: inputFolderUrl, configuration: configure) else { return nil }
         sessionProgressStructs[id] = PhotogrammetrySessionProgress(session: session)
