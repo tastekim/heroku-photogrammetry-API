@@ -84,7 +84,7 @@ func routes(_ app: Application) throws {
             for (key, value) in parameters {
                 multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
             }
-        }, to: "http://52.221.198.249:3000/usdz2glb")
+        }, to: "http://13.250.104.181:3000/usdz2glb")
             .response { response in
                 if response.error == nil {
                     // File uploaded successfully
