@@ -111,7 +111,7 @@ class PhotogrammetryManager {
     public func doPhotogrammetry(_ id: UUID) async -> PhotogrammetrySession.Result? {
         let url = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("\(id.uuidString).usdz")
 //        let request = PhotogrammetrySession.Request.modelFile(url: url, detail: .reduced)
-        let request = PhotogrammetrySession.Request.modelFile(url: url, detail: .full)
+        let request = PhotogrammetrySession.Request.modelFile(url: url, detail: .medium)
         sessionProgressStructs[id]!.fileUrl = url
         let session = sessionProgressStructs[id]!.session
         
